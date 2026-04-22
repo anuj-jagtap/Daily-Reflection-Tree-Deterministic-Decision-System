@@ -1,0 +1,96 @@
+[
+  {"id":"START","type":"start","text":"Good evening. Let's reflect on your day.","next":"A1_Q1"},
+
+  {"id":"A1_Q1","type":"question","text":"How would you describe your day?","options":["Productive","Mixed","Frustrating","Exhausting"],
+  "next":{"Productive":"A1_Q2A","Mixed":"A1_Q2A","Frustrating":"A1_Q2B","Exhausting":"A1_Q2B"}},
+
+  {"id":"A1_Q2A","type":"question","text":"When something went well today, what made it happen?",
+  "options":["My preparation","Team support","Luck","Quick adjustment"],
+  "signal":{"My preparation":"axis1:internal","Quick adjustment":"axis1:internal","Team support":"axis1:external","Luck":"axis1:external"},
+  "next":"A1_Q3"},
+
+  {"id":"A1_Q2B","type":"question","text":"When things went wrong, what was your first reaction?",
+  "options":["Fix what I can","Wait for help","Push through silently","Felt stuck"],
+  "signal":{"Fix what I can":"axis1:internal","Push through silently":"axis1:internal","Wait for help":"axis1:external","Felt stuck":"axis1:external"},
+  "next":"A1_Q3"},
+
+  {"id":"A1_Q3","type":"question","text":"During challenges, what mattered most?",
+  "options":["Finding a solution","Avoiding mistakes","Waiting for clarity","Finishing somehow"],
+  "signal":{"Finding a solution":"axis1:internal","Finishing somehow":"axis1:internal","Waiting for clarity":"axis1:external","Avoiding mistakes":"axis1:external"},
+  "next":"A1_DECISION"},
+
+  {"id":"A1_DECISION","type":"decision","logic":"if axis1.internal > axis1.external → A1_REFLECT_INT else → A1_REFLECT_EXT"},
+
+  {"id":"A1_REFLECT_INT","type":"reflection",
+  "text":"You took charge of your day in some way. Even when things changed, you tried to handle them.",
+  "next":"BRIDGE_1_2"},
+
+  {"id":"A1_REFLECT_EXT","type":"reflection",
+  "text":"It felt like things were out of your control today. Still, you made some choices — noticing them can help you feel more in control.",
+  "next":"BRIDGE_1_2"},
+
+  {"id":"BRIDGE_1_2","type":"bridge","text":"Now let's shift from how things happened to what you contributed.","next":"A2_Q1"},
+
+  {"id":"A2_Q1","type":"question","text":"Think of one interaction today. What stands out?",
+  "options":["I helped someone","I taught something","I expected recognition","I felt others underperformed"],
+  "signal":{"I helped someone":"axis2:contribution","I taught something":"axis2:contribution","I expected recognition":"axis2:entitlement","I felt others underperformed":"axis2:entitlement"},
+  "next":{"I helped someone":"A2_Q2A","I taught something":"A2_Q2A","I expected recognition":"A2_Q2B","I felt others underperformed":"A2_Q2B"}},
+
+  {"id":"A2_Q2A","type":"question","text":"What motivated that action?",
+  "options":["It felt right","Team success","Habit","I was asked"],
+  "signal":{"It felt right":"axis2:contribution","Team success":"axis2:contribution","Habit":"axis2:contribution","I was asked":"axis2:neutral"},
+  "next":"A2_Q3"},
+
+  {"id":"A2_Q2B","type":"question","text":"What bothered you the most?",
+  "options":["Lack of appreciation","Others not working","Unfair workload","No support"],
+  "signal":{"Lack of appreciation":"axis2:entitlement","Others not working":"axis2:entitlement","Unfair workload":"axis2:entitlement","No support":"axis2:entitlement"},
+  "next":"A2_Q3"},
+
+  {"id":"A2_Q3","type":"question","text":"How did you feel after that interaction?",
+  "options":["Satisfied","Neutral","Underappreciated","Frustrated"],
+  "signal":{"Satisfied":"axis2:contribution","Neutral":"axis2:neutral","Underappreciated":"axis2:entitlement","Frustrated":"axis2:entitlement"},
+  "next":"A2_DECISION"},
+
+  {"id":"A2_DECISION","type":"decision","logic":"if axis2.contribution > axis2.entitlement → A2_REFLECT_CONTR else → A2_REFLECT_ENT"},
+
+  {"id":"A2_REFLECT_CONTR","type":"reflection",
+  "text":"You put in effort and tried to help or contribute. That kind of mindset usually builds trust over time.",
+  "next":"BRIDGE_2_3"},
+
+  {"id":"A2_REFLECT_ENT","type":"reflection",
+  "text":"You were focused on what was missing or unfair today. That’s normal — but shifting focus to what you can do might change how things feel.",
+  "next":"BRIDGE_2_3"},
+
+  {"id":"BRIDGE_2_3","type":"bridge","text":"Now let's zoom out beyond you.","next":"A3_Q1"},
+
+  {"id":"A3_Q1","type":"question","text":"When you think about today’s biggest challenge, who comes to mind?",
+  "options":["Just me","My team","A colleague","Customer/end user"],
+  "signal":{"Just me":"axis3:self","My team":"axis3:team","A colleague":"axis3:team","Customer/end user":"axis3:wide"},
+  "next":"A3_Q2"},
+
+  {"id":"A3_Q2","type":"question","text":"What impact mattered most today?",
+  "options":["My tasks","Team progress","Helping someone","User value"],
+  "signal":{"My tasks":"axis3:self","Team progress":"axis3:team","Helping someone":"axis3:wide","User value":"axis3:wide"},
+  "next":"A3_Q3"},
+
+  {"id":"A3_Q3","type":"question","text":"If you could change one thing, what would it be?",
+  "options":["Improve my work","Support team better","Help someone more","Think of user impact"],
+  "signal":{"Improve my work":"axis3:self","Support team better":"axis3:team","Help someone more":"axis3:wide","Think of user impact":"axis3:wide"},
+  "next":"A3_DECISION"},
+
+  {"id":"A3_DECISION","type":"decision","logic":"if axis3.wide > axis3.self → A3_REFLECT_WIDE else → A3_REFLECT_NARROW"},
+
+  {"id":"A3_REFLECT_WIDE","type":"reflection",
+  "text":"You thought beyond just yourself — about others or the bigger picture. That often brings more meaning to the day.",
+  "next":"SUMMARY"},
+
+  {"id":"A3_REFLECT_NARROW","type":"reflection",
+  "text":"Your focus stayed mostly on your own work and challenges. That’s how most days are — but looking beyond can change your perspective.",
+  "next":"SUMMARY"},
+
+  {"id":"SUMMARY","type":"summary",
+  "text":"Today had a mix of reactions and choices. You handled some things actively, and some felt outside your control. Just noticing this is a good first step.",
+  "next":"END"},
+
+  {"id":"END","type":"end","text":"That's it for today. See you tomorrow."}
+]
